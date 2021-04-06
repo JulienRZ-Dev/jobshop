@@ -2,10 +2,10 @@ package jobshop.encodings;
 
 import java.util.Objects;
 
-/** Represents a task (job,task) of an jobshop problem.
+/** Represents a task (job,task) of a jobshop problem.
  *
- * Example : (2, 3) repesents the fourth task of the third job. (remeber that we tart counting at 0)
- * */
+ * Example : (2, 3) represents the fourth task of the third job. (remember that we start counting at 0)
+ **/
 public final class Task {
 
     /** Identifier of the job */

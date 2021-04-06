@@ -20,18 +20,28 @@ public class Instance {
     /** Number of machines, assumed to be same as number of tasks. */
     public final int numMachines;
 
+    /** Matrix containing the duration of all tasks. */
     final int[][] durations;
+
+    /** Matrix containing the machine on which each task must be scheduled. */
     final int[][] machines;
 
+    /** Duration of the given task. */
     public int duration(int job, int task) {
         return durations[job][task];
     }
+
+    /** Duration of the given task. */
     public int duration(Task t) {
         return duration(t.job, t.task);
     }
+
+    /** Machine on which the given task must be scheduled. */
     public int machine(int job, int task) {
         return machines[job][task];
     }
+
+    /** Machine on which the given task must be scheduled. */
     public int machine(Task t) {
         return this.machine(t.job, t.task);
     }
@@ -45,6 +55,11 @@ public class Instance {
         throw new RuntimeException("No task targeting machine "+wanted_machine+" on job "+job);
     }
 
+    /**
+     * Creates a new instance, with uninitialized durations and machines.
+     * This should no be called directly. Instead, Instance objects should be created with the
+     * <code>Instance.fromFile()</code> static method.
+     */
     Instance(int numJobs, int numTasks) {
         this.numJobs = numJobs;
         this.numTasks = numTasks;

@@ -5,12 +5,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BestKnownResult {
+/**
+ * This class contains the best known results for common jobshop instances.
+ * Note that the best known result might not have been proven to be the optimal solution
+ * for the instance.
+ */
+public class BestKnownResults {
 
+    /**
+     * Checks whether we have data available for the provided instance.
+     * @param instanceName Name of the instance.
+     * @return True if the isntance is known, false otherwise.
+     */
     public static boolean isKnown(String instanceName) {
         return bests.containsKey(instanceName);
     }
 
+    /**
+     * Returns all instances that start with the given prefix.
+     * For example, the prefix "ft" should match the instances "ft06", "ft10" and "ft20"
+     * @param namePrefix Prefix that should be looked-up.
+     * @return All instances that start with the given prefix, in alphabetical order.
+     */
     public static List<String> instancesMatching(String namePrefix) {
         return Arrays.stream(instances)
                 .filter(i -> i.startsWith(namePrefix))
@@ -18,6 +34,11 @@ public class BestKnownResult {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns the best known result for the given instance name.
+     * @param instanceName Instance of which we want to retrieve the best result.
+     * @return Best makespan that has ever been found for this instance.
+     */
     public static int of(String instanceName) {
         if(!bests.containsKey(instanceName)) {
             throw new RuntimeException("Unknown best result for "+instanceName);
@@ -25,8 +46,12 @@ public class BestKnownResult {
         return bests.get(instanceName);
     }
 
-    static private HashMap<String, Integer> bests;
+    // all best results.
+    static final private HashMap<String, Integer> bests;
+    // a sorted array of instance names
     static String[] instances;
+
+    // initialize the internal data structures.
     static {
         bests = new HashMap<>();
         bests.put("aaa1", 11);

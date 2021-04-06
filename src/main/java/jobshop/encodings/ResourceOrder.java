@@ -41,7 +41,7 @@ public class ResourceOrder extends Encoding {
         for(int m = 0 ; m<schedule.pb.numMachines ; m++) {
             final int machine = m;
 
-            // for thi machine, find all tasks that are executed on it and sort them by their start time
+            // for this machine, find all tasks that are executed on it and sort them by their start time
             tasksByMachine[m] =
                     IntStream.range(0, pb.numJobs) // all job numbers
                             .mapToObj(j -> new Task(j, pb.task_with_machine(j, machine))) // all tasks on this machine (one per job)
