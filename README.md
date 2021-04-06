@@ -27,7 +27,7 @@ AVG      -        -          1.0        -   9.1
 
 Fields in the result view are the following :
 - `instance`: name of the instance
-- `size`: size of the instance `{nom-jobs}x{num-tasks}`
+- `size`: size of the instance `{num-jobs}x{num-tasks}`
 - `best`: best known resultfor this instance
 - `runtime`: time taken by the solver in milliseconds (rounded)
 - `makespan`: makespan of the solution

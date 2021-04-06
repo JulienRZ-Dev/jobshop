@@ -44,7 +44,7 @@ public class DescentSolver implements Solver {
      * machine 1 : (0,2) (2,1) (1,1)
      * machine 2 : ...
      *
-     * The swam with : machine = 1, t1= 0 and t2 = 1
+     * The swap with : machine = 1, t1= 0 and t2 = 1
      * Represent inversion of the two tasks : (0,2) and (2,1)
      * Applying this swap on the above resource order should result in the following one :
      * machine 0 : (0,1) (1,2) (2,2)
