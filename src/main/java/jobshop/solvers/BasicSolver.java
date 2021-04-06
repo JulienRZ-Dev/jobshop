@@ -5,6 +5,10 @@ import jobshop.Result;
 import jobshop.Solver;
 import jobshop.encodings.JobNumbers;
 
+/**
+ * A very naïve solver that first schedules
+ *
+ **/
 public class BasicSolver implements Solver {
     @Override
     public Result solve(Instance instance, long deadline) {

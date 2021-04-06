@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.IntStream;
 
-/** Représentation par numéro de job. */
+/** Encoding of the solution of a jobshop problem by job numbers. */
 public class JobNumbers extends Encoding {
 
     /** A numJobs * numTasks array containing the representation by job numbers. */

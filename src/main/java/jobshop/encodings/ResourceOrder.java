@@ -14,7 +14,7 @@ public class ResourceOrder extends Encoding {
     // executed on this machine in the same order
     public final Task[][] tasksByMachine;
 
-    // for each machine, indicate on many tasks have been initialized
+    // for each machine, indicate how many tasks have been initialized
     public final int[] nextFreeSlot;
 
     /** Creates a new empty resource order. */
@@ -71,10 +71,10 @@ public class ResourceOrder extends Encoding {
         // loop while there remains a job that has unscheduled tasks
         while(IntStream.range(0, instance.numJobs).anyMatch(m -> nextToScheduleByJob[m] < instance.numTasks)) {
 
-            // selects a task that has noun scheduled predecessor on its job and machine :
+            // selects a task that has no unscheduled predecessor on its job and machine :
             //  - it is the next to be schedule on a machine
             //  - it is the next to be scheduled on its job
-            // if there is no such task, we have cyclic dependency and the solution is invalid
+            // If there is no such task, we have cyclic dependency and the solution is invalid.
             Optional<Task> schedulable =
                     IntStream.range(0, instance.numMachines) // all machines ...
                     .filter(m -> nextToScheduleByMachine[m] < instance.numJobs) // ... with unscheduled jobs
@@ -83,7 +83,7 @@ public class ResourceOrder extends Encoding {
                     .findFirst(); // select the first one if any
 
             if(schedulable.isPresent()) {
-                // we found a schedulable task, lets call it t
+                // we have a schedulable task, lets call it t
                 Task t = schedulable.get();
                 int machine = instance.machine(t.job, t.task);
 

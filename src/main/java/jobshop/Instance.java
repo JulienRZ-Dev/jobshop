@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 
 public class Instance {
 
+    /** Name of the instance. Same as the filename from which the instance is loaded. */
+    public final String name;
+
     /** Number of jobs in the instance */
     public final int numJobs;
 
@@ -60,7 +63,8 @@ public class Instance {
      * This should no be called directly. Instead, Instance objects should be created with the
      * <code>Instance.fromFile()</code> static method.
      */
-    Instance(int numJobs, int numTasks) {
+    Instance(String name, int numJobs, int numTasks) {
+        this.name = name;
         this.numJobs = numJobs;
         this.numTasks = numTasks;
         this.numMachines = numTasks;
@@ -71,19 +75,20 @@ public class Instance {
 
     /** Parses a instance from a file. */
     public static Instance fromFile(Path path) throws IOException {
+        String name = path.getFileName().toString();
         Iterator<String> lines = Files.readAllLines(path).stream()
                 .filter(l -> !l.startsWith("#"))
                 .collect(Collectors.toList())
                 .iterator();
 
         Scanner header = new Scanner(lines.next());
-        int num_jobs = header.nextInt();
-        int num_tasks = header.nextInt();
-        Instance pb = new Instance(num_jobs, num_tasks);
+        int numJobs = header.nextInt();
+        int numTasks = header.nextInt();
+        Instance pb = new Instance(name, numJobs, numTasks);
 
-        for(int job = 0 ; job<num_jobs ; job++) {
+        for(int job = 0 ; job<numJobs ; job++) {
             Scanner line = new Scanner(lines.next());
-            for(int task = 0 ; task < num_tasks ; task++) {
+            for(int task = 0 ; task < numTasks ; task++) {
                 pb.machines[job][task] = line.nextInt();
                 pb.durations[job][task] = line.nextInt();
             }
