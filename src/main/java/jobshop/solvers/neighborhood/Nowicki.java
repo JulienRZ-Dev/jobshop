@@ -19,13 +19,13 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
      * Represent the task sequence : [(0,2) (2,1)]
      *
      * */
-    static class Block {
+    public static class Block {
         /** machine on which the block is identified */
-        final int machine;
+        public final int machine;
         /** index of the first task of the block */
-        final int firstTask;
+        public final int firstTask;
         /** index of the last task of the block */
-        final int lastTask;
+        public final int lastTask;
 
         Block(int machine, int firstTask, int lastTask) {
             this.machine = machine;
@@ -49,13 +49,13 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
      * machine 1 : (2,1) (0,2) (1,1)
      * machine 2 : ...
      */
-    static class Swap extends Neighbor<ResourceOrder> {
+    public static class Swap extends Neighbor<ResourceOrder> {
         // machine on which to perform the swap
-        final int machine;
+        public final int machine;
         // index of one task to be swapped
-        final int t1;
+        public final int t1;
         // index of the other task to be swapped
-        final int t2;
+        public final int t2;
 
         Swap(int machine, int t1, int t2) {
             this.machine = machine;
