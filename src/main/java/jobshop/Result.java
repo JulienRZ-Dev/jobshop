@@ -2,6 +2,7 @@ package jobshop;
 
 import jobshop.encodings.Schedule;
 
+/** Class representing the result of a solver. */
 public class Result {
 
     public Result(Instance instance, Schedule schedule, ExitCause cause) {
@@ -10,12 +11,23 @@ public class Result {
         this.cause = cause;
     }
 
+    /** Documents the reason why a solver returned the solution. */
     public enum ExitCause {
-        Timeout, ProvedOptimal, Blocked
+        /** The solver ran out of time and had to exit. */
+        Timeout,
+        /** The solution has been proved optimal and thus can no longer be improved. */
+        ProvedOptimal,
+        /** The solver was not able to further improve the solution (e.g. blocked in a local minima. */
+        Blocked
     }
 
+    /** Instance that was solved. */
     public final Instance instance;
+
+    /** A schedule of the solution or null if no solution was found. */
     public final Schedule schedule;
+
+    /** Reason why the solver exited with this solution. */
     public final ExitCause cause;
 
 

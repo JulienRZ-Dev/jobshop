@@ -1,13 +1,15 @@
 package jobshop;
 
 import jobshop.encodings.JobNumbers;
+import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Schedule;
+import jobshop.encodings.Task;
 import jobshop.solvers.GreedySolver;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class DebuggingMain {
+public class MainTest {
 
     public static void main(String[] args) {
         try {
@@ -25,12 +27,18 @@ public class DebuggingMain {
 
             System.out.println("\nENCODING: " + enc);
 
+            // convert to a schedule and display
             Schedule schedule = enc.toSchedule();
             System.out.println("VALID: " + schedule.isValid());
             System.out.println("MAKESPAN: " + schedule.makespan());
             System.out.println("SCHEDULE: " + schedule.toString());
             System.out.println("GANTT: " + schedule.asciiGantt());
 
+            Schedule manualSchedule = new Schedule(instance);
+            // TODO: encode the same solution
+
+            ResourceOrder manualRO = new ResourceOrder(instance);
+            // TODO: encode the same solution
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

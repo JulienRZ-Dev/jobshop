@@ -24,7 +24,7 @@ public class JobNumbers extends Encoding {
     }
 
     public JobNumbers(Schedule schedule) {
-        super(schedule.pb);
+        super(schedule.instance);
 
         this.jobs = new int[instance.numJobs * instance.numTasks];
 

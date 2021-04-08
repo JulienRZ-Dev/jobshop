@@ -5,19 +5,44 @@ import jobshop.Instance;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class Schedule {
-    public final Instance pb;
+/** Direct encoding of the solution to JobShop problem.
+ *
+ * Associates every task to its start time.
+ */
+public class Schedule extends Encoding {
+
     // start times of each job and task
     // times[j][i] is the start time of task (j,i) : i^th task of the j^th job
     final int[][] times;
 
     /** Creates a new schedule for the given instance where all start times are uninitialized. */
-    public Schedule(Instance pb) {
-        this.pb = pb;
-        this.times = new int[pb.numJobs][];
-        for(int j = 0 ; j < pb.numJobs ; j++) {
-            this.times[j] = new int[pb.numTasks];
+    public Schedule(Instance instance) {
+        super(instance);
+        this.times = new int[instance.numJobs][];
+        for(int j = 0; j < instance.numJobs ; j++) {
+            this.times[j] = new int[instance.numTasks];
         }
+    }
+
+
+    /** Start time of the given task. */
+    public int startTime(int job, int task) {
+        return times[job][task];
+    }
+
+    /** Start time of the given task. */
+    public int startTime(Task task) {
+        return startTime(task.job, task.task);
+    }
+
+    /** End time of the given task. */
+    public int endTime(int job, int task) {
+        return startTime(job, task) + instance.duration(job, task);
+    }
+
+    /** End time of the given task. */
+    public int endTime(Task task) {
+        return endTime(task.job, task.task);
     }
 
     /** Sets the start time of the given task. */
@@ -27,25 +52,25 @@ public class Schedule {
 
     /** Returns true if this schedule is valid (no constraint is violated) */
     public boolean isValid() {
-        for(int j = 0 ; j<pb.numJobs ; j++) {
-            for(int t = 1 ; t<pb.numTasks ; t++) {
-                if(startTime(j, t-1) + pb.duration(j, t-1) > startTime(j, t))
+        for(int j = 0; j<instance.numJobs ; j++) {
+            for(int t = 1; t< instance.numTasks ; t++) {
+                if(startTime(j, t-1) + instance.duration(j, t-1) > startTime(j, t))
                     return false;
             }
-            for(int t = 0 ; t<pb.numTasks ; t++) {
+            for(int t = 0; t< instance.numTasks ; t++) {
                 if(startTime(j, t) < 0)
                     return false;
             }
         }
 
-        for (int machine = 0 ; machine < pb.numMachines ; machine++) {
-            for(int j1=0 ; j1<pb.numJobs ; j1++) {
-                int t1 = pb.task_with_machine(j1, machine);
-                for(int j2=j1+1 ; j2<pb.numJobs ; j2++) {
-                    int t2 = pb.task_with_machine(j2, machine);
+        for (int machine = 0; machine < instance.numMachines ; machine++) {
+            for(int j1 = 0; j1< instance.numJobs ; j1++) {
+                int t1 = instance.task_with_machine(j1, machine);
+                for(int j2 = j1+1; j2< instance.numJobs ; j2++) {
+                    int t2 = instance.task_with_machine(j2, machine);
 
-                    boolean t1_first = startTime(j1, t1) + pb.duration(j1, t1) <= startTime(j2, t2);
-                    boolean t2_first = startTime(j2, t2) + pb.duration(j2, t2) <= startTime(j1, t1);
+                    boolean t1_first = startTime(j1, t1) + instance.duration(j1, t1) <= startTime(j2, t2);
+                    boolean t2_first = startTime(j2, t2) + instance.duration(j2, t2) <= startTime(j1, t1);
 
                     if(!t1_first && !t2_first)
                         return false;
@@ -61,30 +86,10 @@ public class Schedule {
      */
     public int makespan() {
         int max = -1;
-        for(int j = 0 ; j<pb.numJobs ; j++) {
-            max = Math.max(max, endTime(j, pb.numTasks-1));
+        for(int j = 0; j< instance.numJobs ; j++) {
+            max = Math.max(max, endTime(j, instance.numTasks-1));
         }
         return max;
-    }
-
-    /** Start time of the given task. */
-    public int startTime(int job, int task) {
-        return times[job][task];
-    }
-
-    /** Start time of the given task. */
-    public int startTime(Task task) {
-        return startTime(task.job, task.task);
-    }
-
-    /** End time of the given task. */
-    public int endTime(int job, int task) {
-        return startTime(job, task) + pb.duration(job, task);
-    }
-
-    /** End time of the given task. */
-    public int endTime(Task task) {
-        return endTime(task.job, task.task);
     }
 
     /** Returns true if the given sequence of task is a critical path of the schedule. */
@@ -108,8 +113,8 @@ public class Schedule {
      */
     public List<Task> criticalPath() {
         // select task with greatest end time
-        Task ldd = IntStream.range(0, pb.numJobs)
-                .mapToObj(j -> new Task(j, pb.numTasks-1))
+        Task ldd = IntStream.range(0, instance.numJobs)
+                .mapToObj(j -> new Task(j, instance.numTasks-1))
                 .max(Comparator.comparing(this::endTime))
                 .get();
         assert endTime(ldd) == makespan();
@@ -124,7 +129,7 @@ public class Schedule {
         // starts a time 0
         while(startTime(path.getFirst()) != 0) {
             Task cur = path.getFirst();
-            int machine = pb.machine(cur.job, cur.task);
+            int machine = instance.machine(cur.job, cur.task);
 
             // will contain the task that was delaying the start
             // of our current task
@@ -140,8 +145,8 @@ public class Schedule {
             }
             if(latestPredecessor.isEmpty()) {
                 // no latest predecessor found yet, look among tasks executing on the same machine
-                latestPredecessor = IntStream.range(0, pb.numJobs)
-                        .mapToObj(j -> new Task(j, pb.task_with_machine(j, machine)))
+                latestPredecessor = IntStream.range(0, instance.numJobs)
+                        .mapToObj(j -> new Task(j, instance.task_with_machine(j, machine)))
                         .filter(t -> endTime(t) == startTime(cur))
                         .findFirst();
             }
@@ -158,11 +163,11 @@ public class Schedule {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nStart times of all tasks:\n");
-        for(int job=0; job<pb.numJobs; job++) {
+        for(int job = 0; job< instance.numJobs; job++) {
             sb.append("Job ");
             sb.append(job);
             sb.append(": ");
-            for(int task=0; task<pb.numTasks; task++) {
+            for(int task = 0; task< instance.numTasks; task++) {
                 sb.append(String.format("%5d",  startTime(job, task)));
 
             }
@@ -182,15 +187,15 @@ public class Schedule {
      */
     public String asciiGantt() {
         var criticalPath = this.criticalPath();
-        int minTaskDur = IntStream.range(0, pb.numJobs).flatMap(job -> IntStream.range(0, pb.numTasks).map(task -> pb.duration(job, task))).min().getAsInt();
+        int minTaskDur = IntStream.range(0, instance.numJobs).flatMap(job -> IntStream.range(0, instance.numTasks).map(task -> instance.duration(job, task))).min().getAsInt();
         // time units by character
         int charsPerTimeUnit = minTaskDur >= 5 ? 1 : (5 / minTaskDur) +1;
         StringBuilder sb = new StringBuilder();
         sb.append("\nGantt Chart\n");
-        for(int job=0; job<pb.numJobs; job++) {
+        for(int job = 0; job< instance.numJobs; job++) {
             sb.append(String.format("Job %2d: ", job));
             int cursor = 0;
-            for(int task=0; task<pb.numTasks; task++) {
+            for(int task = 0; task< instance.numTasks; task++) {
                 Task t = new Task(job, task);
                 var st = startTime(job, task);
                 // add spaces until the start of our task
@@ -214,8 +219,8 @@ public class Schedule {
     String formatTask(Task t, int charPerTimeUnit, boolean isCritical) {
         StringBuilder sb = new StringBuilder();
         String fill = isCritical ? "*" : "-";
-        int dur = pb.duration(t);
-        int machine = pb.machine(t);
+        int dur = instance.duration(t);
+        int machine = instance.machine(t);
         int stringLength = dur * charPerTimeUnit;
         int charsForMachine = machine < 10 ? 1 : 2;
         int numSpaces = stringLength - 2 - charsForMachine; // we use 2 chars for '[' and '[' + 1 or 2 for the machine number
@@ -229,5 +234,11 @@ public class Schedule {
         sb.append(fill.repeat(endSpaces - 1));
         sb.append("]");
         return sb.toString();
+    }
+
+
+    @Override
+    public Schedule toSchedule() {
+        return this;
     }
 }

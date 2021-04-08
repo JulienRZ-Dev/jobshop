@@ -17,13 +17,9 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
 /**
- * This class is the main entry point for testing solver on instances.
- * It provides
+ * This class is the main entry point for doing comparative performance tests of solvers.
  */
 public class Main {
-
-
-
 
     public static void main(String[] args) {
         // configure the argument parser

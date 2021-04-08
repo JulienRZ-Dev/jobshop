@@ -30,13 +30,13 @@ public class ResourceOrder extends Encoding {
     /** Creates a resource order from a schedule. */
     public ResourceOrder(Schedule schedule)
     {
-        super(schedule.pb);
-        Instance pb = schedule.pb;
+        super(schedule.instance);
+        Instance pb = schedule.instance;
 
         this.tasksByMachine = new Task[pb.numMachines][];
         this.nextFreeSlot = new int[instance.numMachines];
 
-        for(int m = 0 ; m<schedule.pb.numMachines ; m++) {
+        for(int m = 0; m<schedule.instance.numMachines ; m++) {
             final int machine = m;
 
             // for this machine, find all tasks that are executed on it and sort them by their start time
@@ -49,6 +49,10 @@ public class ResourceOrder extends Encoding {
             // indicate that all tasks have been initialized for machine m
             nextFreeSlot[m] = instance.numJobs;
         }
+    }
+
+    public void addToMachine(int machine, int jobNumber) {
+        addTaskToMachine(machine, new Task(jobNumber, instance.task_with_machine(jobNumber, machine)));
     }
 
     public void addTaskToMachine(int machine, Task task) {
