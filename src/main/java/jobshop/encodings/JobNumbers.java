@@ -16,6 +16,7 @@ public class JobNumbers extends Encoding {
      * element of `jobs` that has not been set yet. */
     public int nextToSet = 0;
 
+    /** Creates a new empty encoding. */
     public JobNumbers(Instance instance) {
         super(instance);
 
@@ -23,6 +24,7 @@ public class JobNumbers extends Encoding {
         Arrays.fill(jobs, -1);
     }
 
+    /** Cerates a new encoding based on the given schedule. */
     public JobNumbers(Schedule schedule) {
         super(schedule.instance);
 
@@ -48,6 +50,7 @@ public class JobNumbers extends Encoding {
         }
     }
 
+    /** Schedule the next task of the given job. */
     public void addTask(int jobNumber) {
         this.jobs[nextToSet++] = jobNumber;
     }

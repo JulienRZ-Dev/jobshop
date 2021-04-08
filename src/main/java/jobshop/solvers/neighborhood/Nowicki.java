@@ -5,6 +5,13 @@ import jobshop.encodings.ResourceOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Implementation of the Nowicki and Smutnicki neighborhood.
+ *
+ * It works on the ResourceOrder encoding by generating two neighbors for each block
+ * of the critical path.
+ * For each block, two neighbors should be generated that respectivly swap the first two and
+ * last two tasks of the block.
+ */
 public class Nowicki extends Neighborhood<ResourceOrder> {
 
     /** A block represents a subsequence of the critical path such that all tasks in it execute on the same machine.

@@ -5,8 +5,7 @@ import jobshop.Result;
 import jobshop.encodings.JobNumbers;
 
 /**
- * A very naïve solver that first schedules
- *
+ * A very naïve solver that first schedules all first tasks, then all second tasks, ...
  **/
 public class BasicSolver implements Solver {
     @Override

@@ -69,8 +69,8 @@ public class Schedule extends Encoding {
                 for(int j2 = j1+1; j2< instance.numJobs ; j2++) {
                     int t2 = instance.task_with_machine(j2, machine);
 
-                    boolean t1_first = startTime(j1, t1) + instance.duration(j1, t1) <= startTime(j2, t2);
-                    boolean t2_first = startTime(j2, t2) + instance.duration(j2, t2) <= startTime(j1, t1);
+                    boolean t1_first = endTime(j1, t1) <= startTime(j2, t2);
+                    boolean t2_first = endTime(j2, t2) <= startTime(j1, t1);
 
                     if(!t1_first && !t2_first)
                         return false;

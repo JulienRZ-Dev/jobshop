@@ -1,9 +1,17 @@
 package jobshop.solvers.neighborhood;
 
+import jobshop.encodings.Encoding;
+
 import java.util.List;
 
-public abstract class Neighborhood<Encoding> {
+/** For a particular encoding Enc, a neighborhood allow the generation of the neighbors of
+ * a particular solution.
+ *
+ * @param <Enc> A subcless of Encoding for which this encoding can generate neighbors.
+ */
+public abstract class Neighborhood<Enc extends Encoding> {
 
-    public abstract List<Neighbor<Encoding>> generateNeighbors(Encoding current);
+    /** Generates all neighbors for the current solution.  */
+    public abstract List<Neighbor<Enc>> generateNeighbors(Enc current);
 
 }

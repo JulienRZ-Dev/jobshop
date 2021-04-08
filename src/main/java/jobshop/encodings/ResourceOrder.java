@@ -10,10 +10,10 @@ public class ResourceOrder extends Encoding {
 
     // for each machine m, taskByMachine[m] is an array of tasks to be
     // executed on this machine in the same order
-    public final Task[][] tasksByMachine;
+    final Task[][] tasksByMachine;
 
     // for each machine, indicate how many tasks have been initialized
-    public final int[] nextFreeSlot;
+    final int[] nextFreeSlot;
 
     /** Creates a new empty resource order. */
     public ResourceOrder(Instance instance)
@@ -51,6 +51,8 @@ public class ResourceOrder extends Encoding {
         }
     }
 
+    /** Enqueues a task for the given job on the machine. We automatically, find the task
+     * that must be executed on this particular machine. */
     public void addToMachine(int machine, int jobNumber) {
         addTaskToMachine(machine, new Task(jobNumber, instance.task_with_machine(jobNumber, machine)));
     }
@@ -60,10 +62,16 @@ public class ResourceOrder extends Encoding {
         nextFreeSlot[machine] += 1;
     }
 
-    public void swapTasks(int machine, int indexFirstTask, int indexSecondTask) {
-        Task tmp = tasksByMachine[machine][indexFirstTask];
-        tasksByMachine[machine][indexFirstTask] = tasksByMachine[machine][indexSecondTask];
-        tasksByMachine[machine][indexSecondTask] = tmp;
+    /** Exchange the order of two tasks that are scheduled on a given machine.
+     *
+     * @param machine Machine on which the two tasks appear (line on which to perform the exchange)
+     * @param indexTask1 Position of the first task on the machine (column of the first element)
+     * @param indexTask2 Position of the second task on the machine (column of the second element)
+     */
+    public void swapTasks(int machine, int indexTask1, int indexTask2) {
+        Task tmp = tasksByMachine[machine][indexTask1];
+        tasksByMachine[machine][indexTask1] = tasksByMachine[machine][indexTask2];
+        tasksByMachine[machine][indexTask2] = tmp;
     }
 
     @Override

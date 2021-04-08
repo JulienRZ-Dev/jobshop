@@ -6,6 +6,9 @@ import jobshop.encodings.Schedule;
 
 import java.util.Random;
 
+/** A solver that generates random solutions until a deadline is met.
+ *  Then returns the best solution that was generated.
+ */
 public class RandomSolver implements Solver {
 
     @Override

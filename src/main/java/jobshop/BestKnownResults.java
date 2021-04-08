@@ -15,7 +15,7 @@ public class BestKnownResults {
     /**
      * Checks whether we have data available for the provided instance.
      * @param instanceName Name of the instance.
-     * @return True if the isntance is known, false otherwise.
+     * @return True if the instance is known, false otherwise.
      */
     public static boolean isKnown(String instanceName) {
         return bests.containsKey(instanceName);
