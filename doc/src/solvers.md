@@ -25,3 +25,8 @@ The greddy solver is not implemented yet.
 Its constructor accepts a parameter that specifies the priority that should be used to produce solutions.
 
 ## Descent Solver
+
+
+### Neighborhoods
+
+TODO
