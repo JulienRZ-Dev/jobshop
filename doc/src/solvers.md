@@ -21,7 +21,7 @@ It repeats this process until the deadline to produce a result is met and finall
 
 ## Greedy solver
 
-The greddy solver is not implemented yet. 
+The greedy solver is not implemented yet. 
 Its constructor accepts a parameter that specifies the priority that should be used to produce solutions.
 
 ## Descent Solver
