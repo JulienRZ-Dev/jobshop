@@ -2,8 +2,7 @@ package jobshop.encodings;
 
 import jobshop.Instance;
 import jobshop.Result;
-import jobshop.Schedule;
-import jobshop.Solver;
+import jobshop.solvers.Solver;
 import jobshop.solvers.BasicSolver;
 import org.junit.Test;
 

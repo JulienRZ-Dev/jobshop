@@ -1,8 +1,6 @@
 package jobshop.encodings;
 
-import jobshop.Encoding;
 import jobshop.Instance;
-import jobshop.Schedule;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -53,10 +51,21 @@ public class ResourceOrder extends Encoding {
         }
     }
 
+    public void addTaskToMachine(int machine, Task task) {
+        tasksByMachine[machine][nextFreeSlot[machine]] = task;
+        nextFreeSlot[machine] += 1;
+    }
+
+    public void swapTasks(int machine, int indexFirstTask, int indexSecondTask) {
+        Task tmp = tasksByMachine[machine][indexFirstTask];
+        tasksByMachine[machine][indexFirstTask] = tasksByMachine[machine][indexSecondTask];
+        tasksByMachine[machine][indexSecondTask] = tmp;
+    }
+
     @Override
     public Schedule toSchedule() {
         // indicate for each task that have been scheduled, its start time
-        int [][] startTimes = new int [instance.numJobs][instance.numTasks];
+        Schedule schedule = new Schedule(instance);
 
         // for each job, how many tasks have been scheduled (0 initially)
         int[] nextToScheduleByJob = new int[instance.numJobs];
@@ -88,9 +97,9 @@ public class ResourceOrder extends Encoding {
                 int machine = instance.machine(t.job, t.task);
 
                 // compute the earliest start time (est) of the task
-                int est = t.task == 0 ? 0 : startTimes[t.job][t.task-1] + instance.duration(t.job, t.task-1);
+                int est = t.task == 0 ? 0 : schedule.endTime(t.job, t.task-1);
                 est = Math.max(est, releaseTimeOfMachine[instance.machine(t)]);
-                startTimes[t.job][t.task] = est;
+                schedule.setStartTime(t.job, t.task, est);
 
                 // mark the task as scheduled
                 nextToScheduleByJob[t.job]++;
@@ -103,7 +112,7 @@ public class ResourceOrder extends Encoding {
             }
         }
         // we exited the loop : all tasks have been scheduled successfully
-        return new Schedule(instance, startTimes);
+        return schedule;
     }
 
     /** Creates an exact copy of this resource order. */

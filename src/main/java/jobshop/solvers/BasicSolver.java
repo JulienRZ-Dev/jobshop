@@ -2,7 +2,6 @@ package jobshop.solvers;
 
 import jobshop.Instance;
 import jobshop.Result;
-import jobshop.Solver;
 import jobshop.encodings.JobNumbers;
 
 /**

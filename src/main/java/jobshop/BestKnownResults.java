@@ -55,6 +55,8 @@ public class BestKnownResults {
     static {
         bests = new HashMap<>();
         bests.put("aaa1", 11);
+        bests.put("aaa2", 29);
+        bests.put("aaa3", 41);
         bests.put("abz5", 1234);
         bests.put("abz6", 943);
         bests.put("abz7", 656);

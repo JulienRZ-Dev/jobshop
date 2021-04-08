@@ -1,6 +1,6 @@
 package jobshop;
 
-import java.util.Optional;
+import jobshop.encodings.Schedule;
 
 public class Result {
 

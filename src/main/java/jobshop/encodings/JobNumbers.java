@@ -1,8 +1,6 @@
 package jobshop.encodings;
 
-import jobshop.Encoding;
 import jobshop.Instance;
-import jobshop.Schedule;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -45,9 +43,13 @@ public class JobNumbers extends Encoding {
                     .min(Comparator.comparing(t -> schedule.startTime(t.job, t.task)))
                     .get();
 
-            this.jobs[nextToSet++] = next.job;
+            this.addTask(next.job);
             nextOnJob[next.job] += 1;
         }
+    }
+
+    public void addTask(int jobNumber) {
+        this.jobs[nextToSet++] = jobNumber;
     }
 
     @Override
@@ -59,22 +61,22 @@ public class JobNumbers extends Encoding {
         int[] nextTask = new int[instance.numJobs];
 
         // for each task, its start time
-        int[][] startTimes = new int[instance.numJobs][instance.numTasks];
+        Schedule schedule = new Schedule(instance);
 
         // compute the earliest start time for every task of every job
         for(int job : jobs) {
             int task = nextTask[job];
             int machine = instance.machine(job, task);
             // earliest start time for this task
-            int est = task == 0 ? 0 : startTimes[job][task-1] + instance.duration(job, task-1);
+            int est = task == 0 ? 0 : schedule.endTime(job, task-1);
             est = Math.max(est, nextFreeTimeResource[machine]);
 
-            startTimes[job][task] = est;
+            schedule.setStartTime(job, task, est);
             nextFreeTimeResource[machine] = est + instance.duration(job, task);
             nextTask[job] = task + 1;
         }
 
-        return new Schedule(instance, startTimes);
+        return schedule;
     }
 
     @Override

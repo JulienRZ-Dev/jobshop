@@ -1,6 +1,8 @@
 package jobshop;
 
 import jobshop.encodings.JobNumbers;
+import jobshop.encodings.Schedule;
+import jobshop.solvers.GreedySolver;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -12,25 +14,22 @@ public class DebuggingMain {
             // load the aaa1 instance
             Instance instance = Instance.fromFile(Paths.get("instances/aaa1"));
 
-            // construit une solution dans la représentation par
-            // numéro de jobs : [0 1 1 0 0 1]
-            // Note : cette solution a aussi été vue dans les exercices (section 3.3)
-            //        mais on commençait à compter à 1 ce qui donnait [1 2 2 1 1 2]
+            // builds a solution in the job-numbers encoding [0 1 1 0 0 1]
             JobNumbers enc = new JobNumbers(instance);
-            enc.jobs[enc.nextToSet++] = 0;
-            enc.jobs[enc.nextToSet++] = 1;
-            enc.jobs[enc.nextToSet++] = 1;
-            enc.jobs[enc.nextToSet++] = 0;
-            enc.jobs[enc.nextToSet++] = 0;
-            enc.jobs[enc.nextToSet++] = 1;
+            enc.addTask(0);
+            enc.addTask(1);
+            enc.addTask(1);
+            enc.addTask(0);
+            enc.addTask(0);
+            enc.addTask(1);
 
             System.out.println("\nENCODING: " + enc);
 
-            Schedule sched = enc.toSchedule();
-            // TODO: make it print something meaningful by implementing the Schedule.toString() method
-            System.out.println("SCHEDULE: " + sched);
-            System.out.println("VALID: " + sched.isValid());
-            System.out.println("MAKESPAN: " + sched.makespan());
+            Schedule schedule = enc.toSchedule();
+            System.out.println("VALID: " + schedule.isValid());
+            System.out.println("MAKESPAN: " + schedule.makespan());
+            System.out.println("SCHEDULE: " + schedule.toString());
+            System.out.println("GANTT: " + schedule.asciiGantt());
 
         } catch (IOException e) {
             e.printStackTrace();

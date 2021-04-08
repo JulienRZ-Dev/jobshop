@@ -2,8 +2,8 @@ package jobshop.solvers;
 
 import jobshop.*;
 import jobshop.encodings.JobNumbers;
+import jobshop.encodings.Schedule;
 
-import java.util.Optional;
 import java.util.Random;
 
 public class RandomSolver implements Solver {

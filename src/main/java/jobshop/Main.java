@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jobshop.solvers.*;
+import jobshop.solvers.neighborhood.Nowicki;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
@@ -20,14 +22,7 @@ import net.sourceforge.argparse4j.inf.Namespace;
  */
 public class Main {
 
-    /** All solvers available in this program */
-    private static final HashMap<String, Solver> solvers;
-    static {
-        solvers = new HashMap<>();
-        solvers.put("basic", new BasicSolver());
-        solvers.put("random", new RandomSolver());
-        // TODO: add new solvers here
-    }
+
 
 
     public static void main(String[] args) {
@@ -72,14 +67,7 @@ public class Main {
         // Get the list of solvers that we should benchmark.
         // We also check that we have a solver available for the given name and print an error message otherwise.
         List<String> solversToTest = ns.getList("solver");
-        for(String solverName : solversToTest) {
-            if(!solvers.containsKey(solverName)) {
-                System.err.println("ERROR: Solver \"" + solverName + "\" is not avalaible.");
-                System.err.println("       Available solvers: " + solvers.keySet().toString());
-                System.err.println("       You can provide your own solvers by adding them to the `Main.solvers` HashMap.");
-                System.exit(0);
-            }
-        }
+        List<Solver> solvers = solversToTest.stream().map(Solver::getSolver).collect(Collectors.toList());
 
         // retrieve all instances on which we should run the solvers.
         List<String> instances = new ArrayList<>();
@@ -126,11 +114,10 @@ public class Main {
                 output.printf("%-8s %-5s %4d      ",instanceName, instance.numJobs +"x"+instance.numTasks, bestKnown);
 
                 // run all selected solvers on the instance and print the results
-                for(int solverId = 0 ; solverId < solversToTest.size() ; solverId++) {
+                for(int solverId = 0 ; solverId < solvers.size() ; solverId++) {
                     // Select the next solver to run. Given the solver name passed on the command line,
                     // we lookup the `Main.solvers` hash map to get the solver object with the given name.
-                    String solverName = solversToTest.get(solverId);
-                    Solver solver = solvers.get(solverName);
+                    Solver solver = solvers.get(solverId);
 
                     // start chronometer and compute deadline for the solver to provide a result.
                     long start = System.currentTimeMillis();
@@ -168,7 +155,7 @@ public class Main {
 
 
         } catch (Exception e) {
-            // there was uncought exception, print the stack trace and exit with error.
+            // there was uncaught exception, print the stack trace and exit with error.
             e.printStackTrace();
             System.exit(1);
         }

@@ -1,4 +1,6 @@
-package jobshop;
+package jobshop.encodings;
+
+import jobshop.Instance;
 
 public abstract class Encoding {
 
