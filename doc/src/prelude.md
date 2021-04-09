@@ -2,6 +2,14 @@
 
 In this page, we briefly discuss setting up a productive environment for the assignment. The following pages provide an high-level view of the architecture and main components of the provided source code.
 
+Useful links:
+
+ - [Base code](https://github.com/insa-4ir-meta-heuristiques/template-jobshop/)
+ - [Documentation (this)](https://insa-4ir-meta-heuristiques.github.io/doc/)
+ - [Javadoc](https://insa-4ir-meta-heuristiques.github.io/javadoc/)
+ - [Moodle](https://moodle.insa-toulouse.fr/course/view.php?id=1354)
+ 
+
 ## Setting up
 
 
