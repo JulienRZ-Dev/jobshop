@@ -24,8 +24,8 @@ To import the project in IntelliJ (once IntelliJ is running):
 
 To run the program in IntelliJ, you can 
 
- - Right click on the `src/main/java/Jobshop/Main` class in the project view.
- - Select `Run Main.main()`. It should complain that some arguments are missing.
+ - Right click on the `src/main/java/jobshop/Main` class in the project view.
+ - Select `Run Main.main()`. The program should execute but complain that some arguments are missing.
  - Give it the expected command line arguments : `Run > Edit Configuration`, then fill in the `Program arguments` text box.
 
 ### Working on the command line (Gradle)

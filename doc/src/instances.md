@@ -12,7 +12,7 @@ We provide three of them
 
  - `aaa1`: a very small instance that you can use to get acquainted with the different encodings
  - `aaa2`: a slightly more complex instance that has been used during the classes
- - `aaa3`: a instance that produces deterministic results for the greedy methods
+ - `aaa3`: an instance that produces deterministic results for the greedy methods
 
 
 ## Benchmark instances

@@ -51,7 +51,7 @@ AVG      -        -          1.0        -   9.1
 Fields in the result view are the following :
 - `instance`: name of the instance
 - `size`: size of the instance `{num-jobs}x{num-tasks}`
-- `best`: best known resultfor this instance
+- `best`: best known result for this instance
 - `runtime`: time taken by the solver in milliseconds (rounded)
 - `makespan`: makespan of the solution
 - `ecart`: normalized distance to the best result: `100 * (makespan - best) / best` 
@@ -71,4 +71,5 @@ AVG      -        -          0.3        -  31.5          999.0        -  20.4
 Here the last line give the average `runtime` and `ecart` for each solver.
 
 
-**Tip:** When selecting instance to solve, you can only provide a prefix to instance name. All instances that start with this prefix will be selected.
+**Tip:** When selecting instances to solve, you can only provide a prefix to instance name. All instances that start with this prefix will be selected.
+For instance running the program with the option `--instance la` will select all Lawrences instance (`la01` to `la40`).
