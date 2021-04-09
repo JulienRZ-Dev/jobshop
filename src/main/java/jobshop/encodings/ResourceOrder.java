@@ -62,6 +62,16 @@ public class ResourceOrder extends Encoding {
         nextFreeSlot[machine] += 1;
     }
 
+    /** Returns the i-th task scheduled on a particular machine.
+     *
+     * @param machine Machine on which the task to retrieve is scheduled.
+     * @param taskIndex Index of the task in the queue for this machine.
+     * @return The i-th task scheduled on a machine.
+     */
+    public Task getTaskOfMachine(int machine, int taskIndex) {
+        return tasksByMachine[machine][taskIndex];
+    }
+
     /** Exchange the order of two tasks that are scheduled on a given machine.
      *
      * @param machine Machine on which the two tasks appear (line on which to perform the exchange)

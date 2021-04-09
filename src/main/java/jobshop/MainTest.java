@@ -16,12 +16,12 @@ public class MainTest {
             // load the aaa1 instance
             Instance instance = Instance.fromFile(Paths.get("instances/aaa1"));
 
-            // builds a solution in the job-numbers encoding [0 1 1 0 0 1]
+            // builds a solution in the job-numbers encoding [0 0 1 1 0 1]
             JobNumbers enc = new JobNumbers(instance);
             enc.addTask(0);
-            enc.addTask(1);
-            enc.addTask(1);
             enc.addTask(0);
+            enc.addTask(1);
+            enc.addTask(1);
             enc.addTask(0);
             enc.addTask(1);
 
