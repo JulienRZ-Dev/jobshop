@@ -9,7 +9,7 @@ import java.util.List;
  *
  * It works on the ResourceOrder encoding by generating two neighbors for each block
  * of the critical path.
- * For each block, two neighbors should be generated that respectivly swap the first two and
+ * For each block, two neighbors should be generated that respectively swap the first two and
  * last two tasks of the block.
  */
 public class Nowicki extends Neighborhood<ResourceOrder> {
@@ -34,6 +34,7 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
         /** index of the last task of the block */
         public final int lastTask;
 
+        /** Creates a new block. */
         Block(int machine, int firstTask, int lastTask) {
             this.machine = machine;
             this.firstTask = firstTask;
@@ -57,13 +58,16 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
      * machine 2 : ...
      */
     public static class Swap extends Neighbor<ResourceOrder> {
-        // machine on which to perform the swap
+        /** machine on which to perform the swap */
         public final int machine;
-        // index of one task to be swapped
+
+        /** index of one task to be swapped (in the resource order encoding) */
         public final int t1;
-        // index of the other task to be swapped
+
+        /** index of the other task to be swapped (in the resource order encoding) */
         public final int t2;
 
+        /** Creates a new swap of two tasks. */
         Swap(int machine, int t1, int t2) {
             this.machine = machine;
             this.t1 = t1;
@@ -71,12 +75,13 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
         }
 
 
-        /** Apply this swap on the given resource order, transforming it into a new solution. */
+        /** Apply this swap on the given ResourceOrder, transforming it into a new solution. */
         @Override
         public void applyOn(ResourceOrder current) {
             throw new UnsupportedOperationException();
         }
 
+        /** Unapply this swap on the neighbor, transforming it back into the original solution. */
         @Override
         public void undoApplyOn(ResourceOrder current) {
             throw new UnsupportedOperationException();
@@ -86,8 +91,15 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
 
     @Override
     public List<Neighbor<ResourceOrder>> generateNeighbors(ResourceOrder current) {
-        List<Neighbor<ResourceOrder>> neighbors = new ArrayList<>();
-        // iterate over all blocks of the critical
+        // this simply converts the list of swaps into a list of neighbors
+        return new ArrayList<>(allSwaps(current));
+    }
+
+    /** Generates all swaps of the given ResourceOrder.
+     * This method can be used if one wants to access the inner fields of a neighbors. */
+    public List<Swap> allSwaps(ResourceOrder current) {
+        List<Swap> neighbors = new ArrayList<>();
+        // iterate over all blocks of the critical path
         for(var block : blocksOfCriticalPath(current)) {
             // for this block, compute all neighbors and add them to the list of neighbors
             neighbors.addAll(neighbors(block));

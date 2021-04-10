@@ -12,12 +12,11 @@ Useful links:
 
 ## Setting up
 
+Start by accepting the GitHub classroom assignment : 
 
-You should start by cloning the repository containing the source code.
-
-```
-git clone https://github.com/insa-4ir-meta-heuristiques/template-jobshop
-```
+ - Go to the [invite link](https://classroom.github.com/a/18VUb3aB)
+ - Select your name in the list to associate it with you github account (there is a particular link that you can follow if you do not appear in the list). This should create a private repository to which only yourself and the teachers have access. 
+ - Clone the repository and get started.
 
 ### Working in IntelliJ
 
