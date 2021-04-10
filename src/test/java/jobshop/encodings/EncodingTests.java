@@ -24,7 +24,7 @@ public class EncodingTests {
         enc.jobs[enc.nextToSet++] = 0;
         enc.jobs[enc.nextToSet++] = 1;
 
-        Schedule sched = enc.toSchedule();
+        Schedule sched = enc.toSchedule().get();
         // TODO: make it print something meaningful
         // by implementing the toString() method
         System.out.println(sched);
@@ -42,7 +42,7 @@ public class EncodingTests {
         enc.jobs[enc.nextToSet++] = 0;
         enc.jobs[enc.nextToSet++] = 1;
 
-        sched = enc.toSchedule();
+        sched = enc.toSchedule().get();
         assert sched.isValid();
         assert sched.makespan() == 14;
     }
@@ -60,15 +60,15 @@ public class EncodingTests {
         enc.jobs[enc.nextToSet++] = 0;
         enc.jobs[enc.nextToSet++] = 1;
 
-        Schedule sched = enc.toSchedule();
+        Schedule sched = enc.toSchedule().get();
         assert sched.isValid();
         assert sched.makespan() == 12;
 
         Solver solver = new BasicSolver();
         Result result = solver.solve(instance, System.currentTimeMillis() + 10);
 
-        assert result.schedule.isValid();
-        assert result.schedule.makespan() == sched.makespan(); // should have the same makespan
+        assert result.schedule.get().isValid();
+        assert result.schedule.get().makespan() == sched.makespan(); // should have the same makespan
     }
 
 }

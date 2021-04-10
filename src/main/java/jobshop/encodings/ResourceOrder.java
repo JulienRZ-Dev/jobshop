@@ -2,6 +2,7 @@ package jobshop.encodings;
 
 import jobshop.Instance;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -85,7 +86,7 @@ public class ResourceOrder extends Encoding {
     }
 
     @Override
-    public Schedule toSchedule() {
+    public Optional<Schedule> toSchedule() {
         // indicate for each task that have been scheduled, its start time
         Schedule schedule = new Schedule(instance);
 
@@ -130,16 +131,21 @@ public class ResourceOrder extends Encoding {
                 releaseTimeOfMachine[machine] = est + instance.duration(t.job, t.task);
             } else {
                 // no tasks are schedulable, there is no solution for this resource ordering
-                return null;
+                return Optional.empty();
             }
         }
         // we exited the loop : all tasks have been scheduled successfully
-        return schedule;
+        return Optional.of(schedule);
     }
 
     /** Creates an exact copy of this resource order. */
     public ResourceOrder copy() {
-        return new ResourceOrder(this.toSchedule());
+        var schedule = this.toSchedule();
+        if (schedule.isEmpty()) {
+            throw new RuntimeException("Cannot copy an invalid ResourceOrder");
+        } else {
+            return new ResourceOrder(schedule.get());
+        }
     }
 
     @Override

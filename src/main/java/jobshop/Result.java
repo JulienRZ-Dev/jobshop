@@ -2,10 +2,22 @@ package jobshop;
 
 import jobshop.encodings.Schedule;
 
+import java.util.Optional;
+
 /** Class representing the result of a solver. */
 public class Result {
 
-    public Result(Instance instance, Schedule schedule, ExitCause cause) {
+    /** Instance that was solved. */
+    public final Instance instance;
+
+    /** A schedule of the solution or Optional.empty() if no solution was found. */
+    public final Optional<Schedule> schedule;
+
+    /** Reason why the solver exited with this solution. */
+    public final ExitCause cause;
+
+    /** Creates a new Result object with the corresponding fields. */
+    public Result(Instance instance, Optional<Schedule> schedule, ExitCause cause) {
         this.instance = instance;
         this.schedule = schedule;
         this.cause = cause;
@@ -20,15 +32,4 @@ public class Result {
         /** The solver was not able to further improve the solution (e.g. blocked in a local minima. */
         Blocked
     }
-
-    /** Instance that was solved. */
-    public final Instance instance;
-
-    /** A schedule of the solution or null if no solution was found. */
-    public final Schedule schedule;
-
-    /** Reason why the solver exited with this solution. */
-    public final ExitCause cause;
-
-
 }

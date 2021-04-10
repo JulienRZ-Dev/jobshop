@@ -4,6 +4,7 @@ import jobshop.Instance;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /** Encoding of the solution of a jobshop problem by job numbers. */
@@ -56,7 +57,7 @@ public class JobNumbers extends Encoding {
     }
 
     @Override
-    public Schedule toSchedule() {
+    public Optional<Schedule> toSchedule() {
         // time at which each machine is going to be freed
         int[] nextFreeTimeResource = new int[instance.numMachines];
 
@@ -79,7 +80,7 @@ public class JobNumbers extends Encoding {
             nextTask[job] = task + 1;
         }
 
-        return schedule;
+        return Optional.of(schedule);
     }
 
     @Override

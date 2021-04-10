@@ -4,6 +4,7 @@ import jobshop.*;
 import jobshop.encodings.JobNumbers;
 import jobshop.encodings.Schedule;
 
+import java.util.Optional;
 import java.util.Random;
 
 /** A solver that generates random solutions until a deadline is met.
@@ -22,12 +23,14 @@ public class RandomSolver implements Solver {
                 sol.jobs[sol.nextToSet++] = j;
             }
         }
-        Schedule best = sol.toSchedule();
+        Optional<Schedule> best = sol.toSchedule();
         while(deadline - System.currentTimeMillis() > 1) {
             shuffleArray(sol.jobs, generator);
-            Schedule s = sol.toSchedule();
-            if(s.makespan() < best.makespan()) {
-                best = s;
+            Optional<Schedule> candidate = sol.toSchedule();
+            if(candidate.isPresent()) {
+                if (best.isEmpty() || candidate.get().makespan() < best.get().makespan()) {
+                    best = candidate;
+                }
             }
         }
 

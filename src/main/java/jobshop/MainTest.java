@@ -28,7 +28,7 @@ public class MainTest {
             System.out.println("\nENCODING: " + enc);
 
             // convert to a schedule and display
-            Schedule schedule = enc.toSchedule();
+            Schedule schedule = enc.toSchedule().get();
             System.out.println("VALID: " + schedule.isValid());
             System.out.println("MAKESPAN: " + schedule.makespan());
             System.out.println("SCHEDULE: " + schedule.toString());

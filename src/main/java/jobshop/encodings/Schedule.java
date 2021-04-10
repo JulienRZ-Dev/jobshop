@@ -238,7 +238,7 @@ public class Schedule extends Encoding {
 
 
     @Override
-    public Schedule toSchedule() {
-        return this;
+    public Optional<Schedule> toSchedule() {
+        return Optional.of(this);
     }
 }

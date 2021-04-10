@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jobshop.encodings.Schedule;
 import jobshop.solvers.*;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -122,13 +123,15 @@ public class Main {
                     long runtime = System.currentTimeMillis() - start;
 
                     // check that the solver returned a valid solution
-                    if(!result.schedule.isValid()) {
+                    if(result.schedule.isEmpty() || !result.schedule.get().isValid()) {
                         System.err.println("ERROR: solver returned an invalid schedule");
                         System.exit(1); // bug in implementation, bail out
                     }
+                    // we have a valid schedule
+                    Schedule schedule = result.schedule.get();
 
                     // compute some statistics on the solution and print them.
-                    int makespan = result.schedule.makespan();
+                    int makespan = schedule.makespan();
                     float dist = 100f * (makespan - bestKnown) / (float) bestKnown;
                     avg_runtimes[solverId] += (float) runtime / (float) instances.size();
                     avg_distances[solverId] += dist / (float) instances.size();
