@@ -4,11 +4,12 @@ import jobshop.Instance;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
 /** Encoding of the solution of a jobshop problem by job numbers. */
-public class JobNumbers extends Encoding {
+public final class JobNumbers extends Encoding {
 
     /** A numJobs * numTasks array containing the representation by job numbers. */
     public final int[] jobs;
@@ -25,7 +26,7 @@ public class JobNumbers extends Encoding {
         Arrays.fill(jobs, -1);
     }
 
-    /** Cerates a new encoding based on the given schedule. */
+    /** Creates a new encoding based on the given schedule. */
     public JobNumbers(Schedule schedule) {
         super(schedule.instance);
 
@@ -86,5 +87,20 @@ public class JobNumbers extends Encoding {
     @Override
     public String toString() {
         return Arrays.toString(Arrays.copyOfRange(jobs,0, nextToSet));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JobNumbers that = (JobNumbers) o;
+        return nextToSet == that.nextToSet && Arrays.equals(jobs, that.jobs);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(nextToSet);
+        result = 31 * result + Arrays.hashCode(jobs);
+        return result;
     }
 }

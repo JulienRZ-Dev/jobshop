@@ -9,7 +9,8 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class Instance {
+/** Represents an instance of a JobShop problem. */
+public final class Instance {
 
     /** Name of the instance. Same as the filename from which the instance is loaded. */
     public final String name;

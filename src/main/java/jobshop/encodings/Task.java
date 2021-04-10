@@ -14,7 +14,7 @@ public final class Task {
     /** Index of the task inside the job. */
     public final int task;
 
-
+    /** Creates a new Task object (job, task). */
     public Task(int job, int task) {
         this.job = job;
         this.task = task;

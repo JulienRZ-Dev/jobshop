@@ -14,7 +14,7 @@ public class BasicSolver implements Solver {
         JobNumbers sol = new JobNumbers(instance);
         for(int t = 0 ; t<instance.numTasks ; t++) {
             for(int j = 0 ; j<instance.numJobs ; j++) {
-                sol.jobs[sol.nextToSet++] = j;
+                sol.addTask(j);
             }
         }
 

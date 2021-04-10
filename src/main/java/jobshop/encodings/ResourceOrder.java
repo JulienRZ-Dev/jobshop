@@ -7,7 +7,8 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public class ResourceOrder extends Encoding {
+/** Encoding of a solution by the ordering of tasks on each machine. */
+public final class ResourceOrder extends Encoding {
 
     // for each machine m, taskByMachine[m] is an array of tasks to be
     // executed on this machine in the same order
@@ -55,9 +56,11 @@ public class ResourceOrder extends Encoding {
     /** Enqueues a task for the given job on the machine. We automatically, find the task
      * that must be executed on this particular machine. */
     public void addToMachine(int machine, int jobNumber) {
-        addTaskToMachine(machine, new Task(jobNumber, instance.task_with_machine(jobNumber, machine)));
+        Task taskToEnqueue = new Task(jobNumber, instance.task_with_machine(jobNumber, machine));
+        addTaskToMachine(machine, taskToEnqueue);
     }
 
+    /** Adds the given task to the queue of the given machine. */
     public void addTaskToMachine(int machine, Task task) {
         tasksByMachine[machine][nextFreeSlot[machine]] = task;
         nextFreeSlot[machine] += 1;
@@ -76,8 +79,8 @@ public class ResourceOrder extends Encoding {
     /** Exchange the order of two tasks that are scheduled on a given machine.
      *
      * @param machine Machine on which the two tasks appear (line on which to perform the exchange)
-     * @param indexTask1 Position of the first task on the machine (column of the first element)
-     * @param indexTask2 Position of the second task on the machine (column of the second element)
+     * @param indexTask1 Position of the first task in the machine's queue
+     * @param indexTask2 Position of the second task in the machine's queue
      */
     public void swapTasks(int machine, int indexTask1, int indexTask2) {
         Task tmp = tasksByMachine[machine][indexTask1];
@@ -138,7 +141,10 @@ public class ResourceOrder extends Encoding {
         return Optional.of(schedule);
     }
 
-    /** Creates an exact copy of this resource order. */
+    /** Creates an exact copy of this resource order.
+     *
+     * May fail if the resource order does not represent a valid solution.
+     */
     public ResourceOrder copy() {
         var schedule = this.toSchedule();
         if (schedule.isEmpty()) {
@@ -165,4 +171,18 @@ public class ResourceOrder extends Encoding {
         return s.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResourceOrder that = (ResourceOrder) o;
+        return Arrays.deepEquals(tasksByMachine, that.tasksByMachine) && Arrays.equals(nextFreeSlot, that.nextFreeSlot);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(tasksByMachine);
+        result = 31 * result + Arrays.hashCode(nextFreeSlot);
+        return result;
+    }
 }

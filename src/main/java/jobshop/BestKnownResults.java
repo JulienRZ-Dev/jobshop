@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * Note that the best known result might not have been proven to be the optimal solution
  * for the instance.
  */
-public class BestKnownResults {
+public final class BestKnownResults {
 
     /**
      * Checks whether we have data available for the provided instance.
@@ -35,7 +35,7 @@ public class BestKnownResults {
     }
 
     /**
-     * Returns the best known result for the given instance name.
+     * Returns the best known result for the given instance.
      * @param instanceName Instance of which we want to retrieve the best result.
      * @return Best makespan that has ever been found for this instance.
      */

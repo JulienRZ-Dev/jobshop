@@ -9,6 +9,7 @@ import jobshop.solvers.GreedySolver;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/** A java main classes for testing purposes. */
 public class MainTest {
 
     public static void main(String[] args) {

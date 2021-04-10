@@ -18,12 +18,16 @@ public class RandomSolver implements Solver {
 
         JobNumbers sol = new JobNumbers(instance);
 
+        // initialize a first solution to the problem.
         for(int j = 0 ; j<instance.numJobs ; j++) {
             for(int t = 0 ; t<instance.numTasks ; t++) {
-                sol.jobs[sol.nextToSet++] = j;
+                sol.addTask(j);
             }
         }
+        // best solution is currently the initial one
         Optional<Schedule> best = sol.toSchedule();
+
+        // while we have some time left, generate new solutions by shuffling the current one
         while(deadline - System.currentTimeMillis() > 1) {
             shuffleArray(sol.jobs, generator);
             Optional<Schedule> candidate = sol.toSchedule();
@@ -39,12 +43,12 @@ public class RandomSolver implements Solver {
     }
 
     /** Simple Fisher–Yates array shuffling */
-    private static void shuffleArray(int[] array, Random random)
+    private static void shuffleArray(int[] array, Random randomNumberGenerator)
     {
         int index;
         for (int i = array.length - 1; i > 0; i--)
         {
-            index = random.nextInt(i + 1);
+            index = randomNumberGenerator.nextInt(i + 1);
             if (index != i)
             {
                 array[index] ^= array[i];

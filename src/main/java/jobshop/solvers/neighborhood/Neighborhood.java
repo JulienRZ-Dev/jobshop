@@ -7,7 +7,7 @@ import java.util.List;
 /** For a particular encoding Enc, a neighborhood allow the generation of the neighbors of
  * a particular solution.
  *
- * @param <Enc> A subcless of Encoding for which this encoding can generate neighbors.
+ * @param <Enc> A subclass of Encoding for which this encoding can generate neighbors.
  */
 public abstract class Neighborhood<Enc extends Encoding> {
 
