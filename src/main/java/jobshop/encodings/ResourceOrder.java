@@ -55,6 +55,9 @@ public final class ResourceOrder extends Encoding {
 
     /** Adds the given task to the queue of the given machine. */
     public void addTaskToMachine(int machine, Task task) {
+        if(instance.machine(task) != machine) {
+            throw new RuntimeException("Task " + task + " cannot be scheduled on machine "+machine);
+        }
         tasksByMachine[machine][nextFreeSlot[machine]] = task;
         nextFreeSlot[machine] += 1;
     }
