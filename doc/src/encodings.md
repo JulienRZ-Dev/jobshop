@@ -2,7 +2,11 @@
 
 Several encoding and associated utilities are provided in the `jobshop.encodings` package.
 The abstract class `Encoding` provides a common interface for all encodings.
-The only requirement for an encoding is to transform it self into a `Schedule`.
+The only requirement for an encoding is to be able to transform itself into a `Schedule`.
+
+The `jobshop.encodings` package contains a `Task` class that allows representing a particular task of a jobshop instance.
+A `Task` object contains a pair of integers `(job, task)` that respectively specify the job in which the task appears, and the index of the task in this job.
+For instance the task created with `new Task(0, 2)` would represent the third task of the first job.
 
 ## Schedule
 
@@ -38,7 +42,7 @@ The resource order encoding specifies the order in which each machine will proce
 
 Each machine is associated with an array of tasks that specifies the order on which the tasks must be scheduled on the machine.
 
-For instance, the encoding:
+For instance, the (completely fictional) encoding:
 
  ```
  machine 0: [(0, 1), (1, 0)]
@@ -46,6 +50,6 @@ For instance, the encoding:
  machine 2: [(1, 2), (0, 2)]
  ```
 
- Specifies that the first machine (machine 0) will first process the second task of the first job `(0, 1)` and only when it is finished can start processing the first task of the second job `(1, 0)`.
+ specifies that the first machine (machine 0) will first process the second task of the first job `(0, 1)` and only when it is finished can start processing the first task of the second job `(1, 0)`.
 
  Unlike `JobNumbers`, the `ResourceOrder` encoding might represent invalid solutions. In this case, its `toSchedule()` method will return an empty result.

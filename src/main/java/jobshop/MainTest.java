@@ -3,6 +3,7 @@ package jobshop;
 import jobshop.encodings.JobNumbers;
 import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Schedule;
+import jobshop.encodings.Task;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -35,9 +36,12 @@ public class MainTest {
 
             Schedule manualSchedule = new Schedule(instance);
             // TODO: encode the same solution
+            //manualSchedule.setStartTime(....);
 
             ResourceOrder manualRO = new ResourceOrder(instance);
             // TODO: encode the same solution
+            //manualRO.addTaskToMachine(..., new Task(..., ...));
+
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
