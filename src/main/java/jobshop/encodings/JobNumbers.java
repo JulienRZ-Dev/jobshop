@@ -47,13 +47,13 @@ public final class JobNumbers extends Encoding {
                     .min(Comparator.comparing(t -> schedule.startTime(t.job, t.task)))
                     .get();
 
-            this.addTask(next.job);
+            this.addTaskOfJob(next.job);
             nextOnJob[next.job] += 1;
         }
     }
 
     /** Schedule the next task of the given job. */
-    public void addTask(int jobNumber) {
+    public void addTaskOfJob(int jobNumber) {
         this.jobs[nextToSet++] = jobNumber;
     }
 

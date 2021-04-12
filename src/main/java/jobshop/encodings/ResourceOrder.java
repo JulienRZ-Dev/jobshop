@@ -53,13 +53,6 @@ public final class ResourceOrder extends Encoding {
         }
     }
 
-    /** Enqueues a task for the given job on the machine. We automatically, find the task
-     * that must be executed on this particular machine. */
-    public void addToMachine(int machine, int jobNumber) {
-        Task taskToEnqueue = new Task(jobNumber, instance.task_with_machine(jobNumber, machine));
-        addTaskToMachine(machine, taskToEnqueue);
-    }
-
     /** Adds the given task to the queue of the given machine. */
     public void addTaskToMachine(int machine, Task task) {
         tasksByMachine[machine][nextFreeSlot[machine]] = task;

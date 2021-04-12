@@ -26,14 +26,16 @@ classrooms as well as on `montp.insa-toulouse.fr`.
 To import the project in IntelliJ (once IntelliJ is running):
 
  - Open a new project : `Open project` or `File > Open`
- - Select the `gradle.build` file in the cloned repository. 
+ - Select the `build.gradle` file in the cloned repository. 
  - Select `Open as project`.
 
 To run the program in IntelliJ, you can 
 
  - Right click on the `src/main/java/jobshop/Main` class in the project view.
  - Select `Run Main.main()`. The program should execute but complain that some arguments are missing.
- - Give it the expected command line arguments : `Run > Edit Configuration`, then fill in the `Program arguments` text box.
+ - Specify the expected command line arguments : 
+   - open the run configuration dialog: `Run > Edit Configuration` 
+   - fill in the `Program arguments` text box with `--solver basic random --instance aaa1 aaa2` (see the next page for more details on the meaning of the arguments)
 
 ### Working on the command line (Gradle)
 

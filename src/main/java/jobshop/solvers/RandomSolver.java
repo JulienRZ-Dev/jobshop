@@ -21,7 +21,7 @@ public class RandomSolver implements Solver {
         // initialize a first solution to the problem.
         for(int j = 0 ; j<instance.numJobs ; j++) {
             for(int t = 0 ; t<instance.numTasks ; t++) {
-                sol.addTask(j);
+                sol.addTaskOfJob(j);
             }
         }
         // best solution is currently the initial one

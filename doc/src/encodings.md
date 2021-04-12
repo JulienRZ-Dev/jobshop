@@ -18,9 +18,9 @@ Convenience methods:
  - `asciiGantt()`: generates a Gantt chart view of the solution in ASCII art.
 
 
- ## NumJobs
+ ## JobNumbers
 
- The `NumJobs` encoding consists of a sequence of job numbers. To produce a schedule, one should iterate on the job numbers and try to schedule *as early as possible* the next task of the job.
+ The `JobNumbers` encoding consists of a sequence of job numbers. To produce a schedule, one should iterate on the job numbers and try to schedule *as early as possible* the next task of the job.
 
  For instance the encoding `[0 0 1 1 0 1]` will produce a schedule by trying to place as early as possible the following tasks (in this order):
 

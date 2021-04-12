@@ -3,8 +3,6 @@ package jobshop;
 import jobshop.encodings.JobNumbers;
 import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Schedule;
-import jobshop.encodings.Task;
-import jobshop.solvers.GreedySolver;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -19,12 +17,12 @@ public class MainTest {
 
             // builds a solution in the job-numbers encoding [0 0 1 1 0 1]
             JobNumbers enc = new JobNumbers(instance);
-            enc.addTask(0);
-            enc.addTask(0);
-            enc.addTask(1);
-            enc.addTask(1);
-            enc.addTask(0);
-            enc.addTask(1);
+            enc.addTaskOfJob(0);
+            enc.addTaskOfJob(0);
+            enc.addTaskOfJob(1);
+            enc.addTaskOfJob(1);
+            enc.addTaskOfJob(0);
+            enc.addTaskOfJob(1);
 
             System.out.println("\nENCODING: " + enc);
 
