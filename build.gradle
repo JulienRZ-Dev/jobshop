@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'application'
-    id 'eclipse'
 }
 
 group 'jobshop'
@@ -11,7 +10,7 @@ sourceCompatibility = 11
 
 
 application {
-    mainClassName = 'jobshop.Main'
+    mainClass = 'jobshop.Main'
 }
 
 repositories {
@@ -20,7 +19,7 @@ repositories {
 
 dependencies {
     implementation 'net.sourceforge.argparse4j:argparse4j:0.8.1' // dependency for parsing command line arguments
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
 
