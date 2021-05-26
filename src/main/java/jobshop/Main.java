@@ -138,6 +138,7 @@ public class Main {
 
                     output.printf("%7d %8s %5.1f        ", runtime, makespan, dist);
                     output.flush();
+                    // System.out.println(result.schedule.get().asciiGantt());
                 }
                 output.println();
             }

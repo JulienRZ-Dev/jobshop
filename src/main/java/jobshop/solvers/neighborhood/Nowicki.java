@@ -1,6 +1,8 @@
 package jobshop.solvers.neighborhood;
 
 import jobshop.encodings.ResourceOrder;
+import jobshop.encodings.Schedule;
+import jobshop.encodings.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,10 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
             this.firstTask = firstTask;
             this.lastTask = lastTask;
         }
+
+        public String toString(){
+            return "Task " + firstTask + " to task " + lastTask + " belong to machine " + machine;
+        }
     }
 
     /**
@@ -78,13 +84,18 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
         /** Apply this swap on the given ResourceOrder, transforming it into a new solution. */
         @Override
         public void applyOn(ResourceOrder current) {
-            throw new UnsupportedOperationException();
+            current.swapTasks(this.machine, this.t1, this.t2);
         }
 
         /** Unapply this swap on the neighbor, transforming it back into the original solution. */
         @Override
         public void undoApplyOn(ResourceOrder current) {
-            throw new UnsupportedOperationException();
+            current.swapTasks(this.machine, this.t1, this.t2);
+        }
+
+        public int[] getTasks() {
+            int ret[] = {this.t1, this.t2, this.machine};
+            return ret;
         }
     }
 
@@ -108,14 +119,82 @@ public class Nowicki extends Neighborhood<ResourceOrder> {
     }
 
     /** Returns a list of all the blocks of the critical path. */
-    List<Block> blocksOfCriticalPath(ResourceOrder order) {
-        throw new UnsupportedOperationException();
+    public List<Block> blocksOfCriticalPath(ResourceOrder order) {
+
+        List<Task> tasksOfCriticalPath; // tasks of the critical path
+        ArrayList<Block> blocksOfCriticalPath = new ArrayList<Block>(); // Blocks that will be returned
+        int lastMachine = -1; // keep track of the last machine
+        int currentMachine;
+        int currentTask;
+        int startTask = -1; // start task for a block
+        int endTask = -1; // end task for a block
+        boolean shouldInit = true;
+
+        Schedule schedule = order.toSchedule().get();
+        tasksOfCriticalPath = schedule.criticalPath();
+
+        for(Task task : tasksOfCriticalPath) { // loop over the critical path tasks
+
+
+            currentMachine = order.instance.machine(task); // get the current machine
+            currentTask = getTaskIndexOnRO(task, currentMachine, order); // get the index of the current task in term of ro
+
+            // If it's the first task, variables must be initialized
+            if(shouldInit) {
+
+                startTask = currentTask; // start task of the first block
+                endTask = currentTask; // last task of the block, must be updated every task
+                lastMachine = order.instance.machine(task); // Keep track of the last machine
+                shouldInit = false;
+
+            } else if(lastMachine == currentMachine) { // in this case the task is part of a block
+
+                endTask = currentTask; // last task of the block, must be updated every task
+
+            } else { // If the machines are different, we reached the end of a block
+
+                if (endTask - startTask > 0) {
+                    Block block = new Block(lastMachine, startTask, endTask);
+                    blocksOfCriticalPath.add(block); // The block is over, add it to the list
+                }
+
+                startTask = currentTask;
+                endTask = currentTask;
+                lastMachine = order.instance.machine(task); // Keep track of the last machine
+            }
+        }
+
+        // Add the last block if there is one
+        if(endTask - startTask > 0) {
+            Block block = new Block(lastMachine, startTask, endTask);
+            blocksOfCriticalPath.add(block); // The block is over, add it to the list
+        }
+
+        return blocksOfCriticalPath;
     }
+
+
+    /** Return the task index in for the machine */
+    int getTaskIndexOnRO(Task task, int machine, ResourceOrder order) {
+        for(int i = 0; i < order.instance.numJobs; i++) {
+            if(order.getTaskOfMachine(machine, i).equals(task)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     /** For a given block, return the possible swaps for the Nowicki and Smutnicki neighborhood */
     List<Swap> neighbors(Block block) {
-        throw new UnsupportedOperationException();
+        ArrayList<Swap> neighbors = new ArrayList<>();
 
+        if(block.lastTask - block.firstTask == 1) {
+            neighbors.add(new Swap(block.machine, block.firstTask, block.lastTask));
+        } else {
+            neighbors.add(new Swap(block.machine, block.firstTask, block.firstTask + 1));
+            neighbors.add(new Swap(block.machine, block.lastTask - 1, block.lastTask));
+        }
+        return neighbors;
     }
-
 }

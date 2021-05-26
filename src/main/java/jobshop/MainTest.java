@@ -4,10 +4,14 @@ import jobshop.encodings.JobNumbers;
 import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Schedule;
 import jobshop.encodings.Task;
+import jobshop.solvers.DescentSolver;
 import jobshop.solvers.GreedySolver;
+import jobshop.solvers.Solver;
+import jobshop.solvers.neighborhood.Nowicki;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 
 /** A java main classes for testing purposes. */
 public class MainTest {
@@ -16,6 +20,7 @@ public class MainTest {
         try {
             // load the aaa1 instance
             Instance instance = Instance.fromFile(Paths.get("instances/aaa3"));
+
 
             /*
             // builds a solution in the job-numbers encoding [0 0 1 1 0 1]
@@ -46,9 +51,10 @@ public class MainTest {
             System.out.println("MAKESPAN: " + result.schedule.get().makespan());
             System.out.println(result.schedule.get().asciiGantt());
 
-            /*
-            // MANUAL SCHEDULE
 
+
+            // MANUAL SCHEDULE
+            /*
             Schedule manualSchedule = new Schedule(instance);
 
             manualSchedule.setStartTime(0, 0, 0);
@@ -60,7 +66,6 @@ public class MainTest {
 
             System.out.println("*****MANUAL SCHEDULE*****");
             System.out.println(manualSchedule.asciiGantt());
-
 
             // MANUAL RESOURCE ODER
 

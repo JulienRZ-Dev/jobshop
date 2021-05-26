@@ -24,8 +24,8 @@ public class GreedySolver implements Solver {
     }
 
     // Handle start times memory for EST
-    private ArrayList<Integer> jobsDispoTimes = new ArrayList<Integer>();
-    private ArrayList<Integer> machinesDispoTimes =  new ArrayList<Integer>();
+    private final ArrayList<Integer> jobsDispoTimes = new ArrayList<Integer>();
+    private final ArrayList<Integer> machinesDispoTimes =  new ArrayList<Integer>();
 
 
     @Override
@@ -33,6 +33,7 @@ public class GreedySolver implements Solver {
 
         ResourceOrder ro = new ResourceOrder(instance);
         ArrayList<Task> possibleTasks = new ArrayList<Task>();
+        int newDispoTime = 0;
 
         // init jobsDispoTime
         for(int i = 0; i < instance.numJobs; i++) {
@@ -57,10 +58,6 @@ public class GreedySolver implements Solver {
 
             // what kind of solver do we want to use ?
             switch(this.priority) {
-                case SPT:
-                    // Return the shortest possible task
-                    task = getTaskSTP(instance, possibleTasks);
-                    break;
                 case LPT:
                     // Return the longest possible task
                     task = getTaskLPT(instance, possibleTasks);
@@ -72,25 +69,21 @@ public class GreedySolver implements Solver {
                 case EST_SPT:
                     // Return the shortest possible task that can start earlier
                     task = getTaskEST_SPT(instance, possibleTasks);
-                    jobsDispoTimes.set(task.job, instance.duration(task));
-                    machinesDispoTimes.set(instance.machine(task), instance.duration(task));
+                    newDispoTime = Math.max(jobsDispoTimes.get(task.job),
+                            machinesDispoTimes.get(instance.machine(task))) + instance.duration(task);
+                    jobsDispoTimes.set(task.job, newDispoTime);
+                    machinesDispoTimes.set(instance.machine(task), newDispoTime);
                     break;
                 case EST_LRPT:
                     // Return the longest remaining process possible task that can start earlier
                     task = getTaskEST_LRPT(instance, possibleTasks);
-                    jobsDispoTimes.set(task.job, instance.duration(task));
-                    machinesDispoTimes.set(instance.machine(task), instance.duration(task));
-
-                    System.out.println("possibles tasks : ");
-                    for(Task t : possibleTasks) {
-                        System.out.println(t.toString());
-                    }
-
-                    System.out.println("chosen task : ");
-                    System.out.println(task);
+                    newDispoTime = Math.max(jobsDispoTimes.get(task.job),
+                            machinesDispoTimes.get(instance.machine(task))) + instance.duration(task);
+                    jobsDispoTimes.set(task.job, newDispoTime);
+                    machinesDispoTimes.set(instance.machine(task), newDispoTime);
                     break;
                 default:
-                    // Return the shortest possible task
+                    // Return the shortest possible task (SPT)
                     task = getTaskSTP(instance, possibleTasks);
                     break;
             }
@@ -105,17 +98,17 @@ public class GreedySolver implements Solver {
         }
 
         // return the result
-        return new Result(instance, ro.toSchedule(), Result.ExitCause.ProvedOptimal);
+        return new Result(instance, ro.toSchedule(), Result.ExitCause.Blocked);
     }
 
 
     // STP : shortest processing task
     private Task getTaskSTP(Instance instance, ArrayList<Task> tasks) {
-        Task minTask = tasks.get(0);
-        int minDuration = Integer.MAX_VALUE;
+        Task minTask = tasks.get(0); // task that will be returned
+        int minDuration = Integer.MAX_VALUE; // keep track of the shortest duration
 
-        for(Task task : tasks) {
-            if(instance.duration(task) < minDuration) {
+        for(Task task : tasks) { // loop over all the task
+            if(instance.duration(task) < minDuration) { // update the shortest task
                 minTask = task;
                 minDuration = instance.duration(task);
             }
@@ -126,11 +119,11 @@ public class GreedySolver implements Solver {
 
     // LPT : longest processing task
     private Task getTaskLPT(Instance instance, ArrayList<Task> tasks) {
-        Task maxTask = tasks.get(0);
-        int maxDuration = Integer.MIN_VALUE;
+        Task maxTask = tasks.get(0); // task that will be returned
+        int maxDuration = Integer.MIN_VALUE; // keep track of the longest duration
 
-        for(Task task : tasks) {
-            if(instance.duration(task) > maxDuration) {
+        for(Task task : tasks) { // loop over all the task
+            if(instance.duration(task) > maxDuration) { // update the longest task
                 maxTask = task;
                 maxDuration = instance.duration(task);
             }
@@ -141,12 +134,12 @@ public class GreedySolver implements Solver {
 
     // LRPT : Longest remaining processing task
     private Task getTaskLRPT(Instance instance, ArrayList<Task> tasks) {
-        Task LRPTTask = tasks.get(0);
-        int maxJob = Integer.MIN_VALUE;
+        Task LRPTTask = tasks.get(0); // task that will be returned
+        int maxJob = Integer.MIN_VALUE; // keep track of the longest remaining duration for the job
 
-        for(Task task : tasks) {
+        for(Task task : tasks) { // loop over the tasks
             int remainingTime = getRemainingTimeInJob(instance, task.job, task.task);
-            if(remainingTime > maxJob) {
+            if (remainingTime > maxJob) { // find the longest remaining duration for the job
                 LRPTTask = task;
                 maxJob = remainingTime;
             }
@@ -155,6 +148,7 @@ public class GreedySolver implements Solver {
         return LRPTTask;
     }
 
+    // Get the remaining time to work in job starting from a task
     private int getRemainingTimeInJob(Instance instance, int job, int task) {
         int t = 0;
         for(int i = task; i < instance.numTasks; i++) {
