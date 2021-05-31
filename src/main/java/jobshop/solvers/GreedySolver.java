@@ -24,14 +24,16 @@ public class GreedySolver implements Solver {
     }
 
     // Handle start times memory for EST
-    private final ArrayList<Integer> jobsDispoTimes = new ArrayList<Integer>();
-    private final ArrayList<Integer> machinesDispoTimes =  new ArrayList<Integer>();
+    private ArrayList<Integer> jobsDispoTimes;
+    private ArrayList<Integer> machinesDispoTimes;
 
 
     @Override
     public Result solve(Instance instance, long deadline) {
 
         ResourceOrder ro = new ResourceOrder(instance);
+        jobsDispoTimes = new ArrayList<Integer>();
+        machinesDispoTimes =  new ArrayList<Integer>();
         ArrayList<Task> possibleTasks = new ArrayList<Task>();
         int newDispoTime = 0;
 

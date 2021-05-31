@@ -34,6 +34,7 @@ public class DescentSolver implements Solver {
         List<Neighbor<ResourceOrder>> neighborhood; // List of neighbors
         int currentMakespan = ro.toSchedule().get().makespan();
         boolean foundABest = false;
+        int nbNeighborExplored = 0;
 
         // Let's loop while the deadline haven't been reached
         while(System.currentTimeMillis() - start < deadline) {
@@ -55,6 +56,7 @@ public class DescentSolver implements Solver {
                     }
 
                     neighbor.undoApplyOn(ro); // must reset ro to its original state
+                    nbNeighborExplored++;
                 }
 
                 if(!foundABest) { // if no best founds among neighbors, stop the execution
